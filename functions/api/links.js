@@ -107,7 +107,9 @@ function sanitizeIcon(str) {
 function sanitizeUrl(str) {
   if (typeof str !== 'string') return '';
   const trimmed = str.trim();
-  // Only allow http/https URLs
-  if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) return '';
+  // Allow http://, https://, and mailto: URLs
+  if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://') && !trimmed.startsWith('mailto:')) {
+    return '';
+  }
   return trimmed.slice(0, 500);
 }
