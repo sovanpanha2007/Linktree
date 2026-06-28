@@ -270,7 +270,7 @@
 
     <!-- Profile -->
     <section class="profile">
-      <div class="avatar-wrap" id="avatarEl">🙂</div>
+      <div class="avatar-wrap" id="avatarEl"></div>
       <h1 class="profile-name" id="nameEl">—</h1>
       <p class="profile-bio" id="bioEl"></p>
     </section>
@@ -315,7 +315,7 @@
           const img = document.createElement('img');
           img.src = profile.avatar;
           img.alt = name;
-          img.onerror = () => { wrap.textContent = '🙂'; };
+          img.onerror = () => { wrap.innerHTML = ''; };
           wrap.appendChild(img);
         }
       } catch {
