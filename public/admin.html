@@ -470,7 +470,7 @@
         <div class="form-row">
           <div class="field">
             <label>URL</label>
-            <input type="url" id="newUrl" placeholder="https://tiktok.com/@yourusername" />
+            <input type="text" id="newUrl" placeholder="https://... or mailto:..." />
           </div>
           <div class="field">
             <label>Icon (emoji, SVG, logo, or image URL)</label>
@@ -510,7 +510,7 @@
       <div class="form-row">
         <div class="field">
           <label>URL</label>
-          <input type="url" id="editUrl" />
+          <input type="text" id="editUrl" placeholder="https://... or mailto:..." />
         </div>
         <div class="field">
           <label>Icon (emoji, SVG, logo, or image URL)</label>
@@ -783,7 +783,10 @@
       const icon = document.getElementById('newIcon').value.trim() || '🔗';
 
       if (!title || !url) { toast('Title and URL are required', 'error'); return; }
-      if (!url.startsWith('http')) { toast('URL must start with https://', 'error'); return; }
+      if (!url.startsWith('http') && !url.startsWith('mailto:')) {
+        toast('URL must start with https:// or mailto:', 'error');
+        return;
+      }
 
       const res = await api('/api/links', {
         method: 'POST',
@@ -827,7 +830,10 @@
       const icon = document.getElementById('editIcon').value.trim() || '🔗';
 
       if (!title || !url) { toast('Title and URL are required', 'error'); return; }
-      if (!url.startsWith('http')) { toast('URL must start with https://', 'error'); return; }
+      if (!url.startsWith('http') && !url.startsWith('mailto:')) {
+        toast('URL must start with https:// or mailto:', 'error');
+        return;
+      }
 
       const res = await api(`/api/links/${id}`, {
         method: 'PUT',
