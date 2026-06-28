@@ -5,7 +5,7 @@
 # Run: wrangler d1 create linktree-db
 # ============================================================
 
-name = "linktree"
+name = "linktree-vongsovanpanha"
 compatibility_date = "2024-09-23"
 pages_build_output_dir = "public"
 
