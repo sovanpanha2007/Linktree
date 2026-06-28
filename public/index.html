@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,8 +8,11 @@
   <meta name="description" content="All my links in one place" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0&display=swap"
+    rel="stylesheet" />
   <style>
     @font-face {
       font-family: 'Touk Meas';
@@ -18,19 +22,25 @@
       font-display: swap;
     }
 
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     :root {
-      --bg:         #fbf9f8;
-      --surface:    #ffffff;
-      --surface-low:#f5f3f3;
-      --navy:       #303030;
-      --accent-bg:  #e4e2e2;
-      --muted:      #78767d;
-      --border:     #303030;
-      --radius-sm:  4px;
-      --radius-md:  8px;
-      --max-w:      420px;
+      --bg: #fbf9f8;
+      --surface: #ffffff;
+      --surface-low: #f5f3f3;
+      --navy: #303030;
+      --accent-bg: #e4e2e2;
+      --muted: #78767d;
+      --border: #303030;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --max-w: 420px;
     }
 
     body {
@@ -58,6 +68,7 @@
       text-align: center;
       margin-bottom: 40px;
     }
+
     .avatar-wrap {
       width: 120px;
       height: 120px;
@@ -72,11 +83,13 @@
       justify-content: center;
       font-size: 3rem;
     }
+
     .avatar-wrap img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+
     .profile-name {
       font-family: 'Inter', 'Touk Meas', sans-serif;
       font-size: 1.75rem;
@@ -85,6 +98,7 @@
       letter-spacing: -0.03em;
       line-height: 1.1;
     }
+
     .profile-bio {
       font-family: 'Inter', 'Touk Meas', sans-serif;
       font-size: 0.925rem;
@@ -117,10 +131,12 @@
       cursor: pointer;
       animation: fadeUp 0.4s ease both;
     }
+
     .link-card:hover {
       transform: translateY(-2px);
       box-shadow: 4px 4px 0px 0px var(--navy);
     }
+
     .link-card:active {
       transform: scale(0.98) translateY(0);
       box-shadow: none;
@@ -151,6 +167,7 @@
       justify-content: space-between;
       gap: 12px;
     }
+
     .card-title {
       font-family: 'Inter', 'Touk Meas', sans-serif;
       font-size: 1rem;
@@ -159,6 +176,7 @@
       line-height: 1.3;
       flex: 1;
     }
+
     .card-icon {
       flex-shrink: 0;
       width: 28px;
@@ -169,11 +187,13 @@
       font-size: 1.3rem;
       transition: transform 0.18s ease;
     }
+
     .card-icon svg {
       width: 20px;
       height: 20px;
       fill: currentColor;
     }
+
     .link-card:hover .card-icon {
       transform: translateX(3px);
     }
@@ -188,9 +208,17 @@
       border-radius: var(--radius-md);
       animation: shimmer 1.4s infinite;
     }
+
     @keyframes shimmer {
-      0%, 100% { opacity: 0.6; }
-      50%       { opacity: 1; }
+
+      0%,
+      100% {
+        opacity: 0.6;
+      }
+
+      50% {
+        opacity: 1;
+      }
     }
 
     /* ── Empty state ── */
@@ -204,7 +232,7 @@
 
     /* ── Dotted divider ── */
     .dotted-divider {
-      background-image: linear-gradient(to right, #c8c5cd 33%, rgba(255,255,255,0) 0%);
+      background-image: linear-gradient(to right, #c8c5cd 33%, rgba(255, 255, 255, 0) 0%);
       background-position: bottom;
       background-size: 6px 1px;
       background-repeat: repeat-x;
@@ -217,6 +245,7 @@
       width: 100%;
       padding: 24px 0 0;
     }
+
     .footer-inner {
       display: flex;
       flex-direction: column;
@@ -224,6 +253,7 @@
       gap: 6px;
       text-align: center;
     }
+
     .footer-label {
       font-family: 'Space Mono', 'Touk Meas', monospace;
       font-size: 10px;
@@ -250,17 +280,26 @@
       white-space: nowrap;
       z-index: 999;
     }
+
     .toast.show {
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
+
 <body>
 
 
@@ -289,7 +328,7 @@
     <!-- Footer -->
     <footer>
       <div class="footer-inner">
-        <p class="footer-label">ទាក់ទងមកខ្ញុំ</p>
+        <p class="footer-label"></p>
       </div>
     </footer>
 
@@ -369,7 +408,7 @@
             a.style.transform = 'scale(0.98) translateY(0)';
             a.style.boxShadow = 'none';
           });
-          a.addEventListener('mouseup',    () => { a.style.transform = ''; a.style.boxShadow = ''; });
+          a.addEventListener('mouseup', () => { a.style.transform = ''; a.style.boxShadow = ''; });
           a.addEventListener('mouseleave', () => { a.style.transform = ''; a.style.boxShadow = ''; });
 
           container.appendChild(a);
@@ -413,4 +452,5 @@
     loadLinks();
   </script>
 </body>
+
 </html>
