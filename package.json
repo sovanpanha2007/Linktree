@@ -1,0 +1,16 @@
+{
+  "name": "linktree",
+  "version": "1.0.0",
+  "description": "Self-hosted Linktree using Cloudflare Pages + Workers + D1",
+  "scripts": {
+    "dev": "wrangler pages dev public --d1=DB --binding ADMIN_SECRET_KEY=dev-secret --binding ALLOWED_ADMIN_IP=0.0.0.0",
+    "deploy": "wrangler pages deploy public",
+    "db:create": "wrangler d1 create linktree-db",
+    "db:init": "wrangler d1 execute linktree-db --file=schema.sql --local",
+    "db:init:remote": "wrangler d1 execute linktree-db --file=schema.sql --remote",
+    "db:init:miniflare": "for f in .wrangler/state/v3/d1/miniflare-D1DatabaseObject/*.sqlite; do sqlite3 \"$f\" < schema.sql && echo \"Seeded: $f\"; done"
+  },
+  "devDependencies": {
+    "wrangler": "^3.78.0"
+  }
+}

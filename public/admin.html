@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Linktree</title>
+  <!-- No search engine indexing for admin -->
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+  <style>
+    @font-face {
+      font-family: 'Touk Meas';
+      src: url('/fonts/Toukmeas-Medium.ttf') format('truetype');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0d0d14;
+      --surface: #13131f;
+      --card: rgba(255, 255, 255, 0.04);
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #f1f5f9;
+      --muted: #64748b;
+      --accent: #8b5cf6;
+      --accent2: #ec4899;
+      --danger: #ef4444;
+      --success: #22c55e;
+      --radius: 12px;
+      --input-bg: rgba(255, 255, 255, 0.06);
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'Inter', 'Touk Meas', system-ui, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: rgba(13, 13, 20, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .logo span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .view-site {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .view-site:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── Layout ── */
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* ── Section cards ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .card-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    /* ── Form fields ── */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .field input,
+    .field textarea {
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 72px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 500px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.12);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+    }
+
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.2);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ── Links table ── */
+    .links-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .link-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      transition: border-color 0.2s;
+    }
+
+    .link-row:hover {
+      border-color: rgba(139, 92, 246, 0.3);
+    }
+
+    .link-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .link-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .link-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .link-info-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .link-info-url {
+      font-size: 0.78rem;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .link-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    /* ── Add link form (collapsible) ── */
+    #addForm {
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      animation: fadeIn 0.2s ease;
+    }
+
+    #addForm.open {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── Edit modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: #1a1a28;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal-title {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    /* ── Toast notifications ── */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #fff;
+      z-index: 999;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    #toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    #toast.success {
+      background: #166534;
+      border: 1px solid var(--success);
+    }
+
+    #toast.error {
+      background: #7f1d1d;
+      border: 1px solid var(--danger);
+    }
+
+    /* ── Empty state ── */
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 24px 0;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">🔗 <span>Linktree</span> Admin</div>
+    <a href="/" target="_blank" class="view-site">↗ View Site</a>
+  </header>
+
+  <main>
+
+    <!-- ── Profile Card ── -->
+    <div class="card">
+      <div class="card-title">Profile</div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="field">
+          <label>Display Name</label>
+          <input type="text" id="pName" placeholder="Your Name" maxlength="80" />
+        </div>
+        <div class="field">
+          <label>Bio</label>
+          <textarea id="pBio" placeholder="A short bio or tagline" maxlength="200"></textarea>
+        </div>
+        <div class="field">
+          <label>Avatar Photo</label>
+          <div style="display: flex; align-items: center; gap: 16px; margin-top: 6px;">
+            <div id="avatarPreviewWrap" style="width: 60px; height: 60px; border-radius: 50%; border: 1.5px solid var(--border); overflow: hidden; background: var(--input-bg); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0;">
+              <img id="pAvatarPreview" src="" alt="Avatar Preview" style="width: 100%; height: 100%; object-fit: cover; display: none;" />
+              <span id="pAvatarFallback">🙂</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <label for="pAvatarFile" class="btn btn-secondary btn-sm" style="margin: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                  📷 Choose Image
+                </label>
+                <input type="file" id="pAvatarFile" accept="image/*" style="display: none;" onchange="handleAvatarFile(this.files[0])" />
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeAvatar()" style="display: none;" id="btnRemoveAvatar">Remove</button>
+              </div>
+              <span style="font-size: 0.75rem; color: var(--muted);">Supports JPG, PNG, WebP. Compressed automatically.</span>
+            </div>
+          </div>
+          <input type="hidden" id="pAvatar" />
+        </div>
+        <div>
+          <button class="btn btn-primary" onclick="saveProfile()">Save Profile</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Links Card ── -->
+    <div class="card">
+      <div class="card-title">Links</div>
+
+      <div class="links-list" id="linksList">
+        <div class="empty">Loading links...</div>
+      </div>
+
+      <!-- Add link toggle button -->
+      <div style="margin-top:16px;">
+        <button class="btn btn-secondary" onclick="toggleAddForm()" id="addToggleBtn">
+          + Add Link
+        </button>
+      </div>
+
+      <!-- Add link form -->
+      <div id="addForm">
+        <div class="form-row">
+          <div class="field">
+            <label>Title (Badge)</label>
+            <input type="text" id="newTitle" placeholder="e.g. TikTok" maxlength="100" />
+          </div>
+          <div class="field">
+            <label>Subtitle</label>
+            <input type="text" id="newSubtitle" placeholder="e.g. ស្នាដៃបង្កើតមាតិការបស់ខ្ញុំ" maxlength="150" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>URL</label>
+            <input type="url" id="newUrl" placeholder="https://tiktok.com/@yourusername" />
+          </div>
+          <div class="field">
+            <label>Icon (emoji, SVG, logo, or image URL)</label>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <input type="text" id="newIcon" placeholder="🎵, <svg>...</svg>, or https://example.com/logo.png" maxlength="2000" value="🔗" style="flex: 1;" />
+              <label for="newIconFile" class="btn btn-secondary btn-sm" style="margin: 0; cursor: pointer; white-space: nowrap; height: 38px; display: inline-flex; align-items: center; justify-content: center;">
+                📷 Upload Logo
+              </label>
+              <input type="file" id="newIconFile" accept="image/*" style="display: none;" onchange="handleLinkIconFile(this.files[0], 'newIcon')" />
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-primary" onclick="addLink()">Add Link</button>
+          <button class="btn btn-secondary" onclick="toggleAddForm()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── Edit Modal ── -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal">
+      <div class="modal-title">Edit Link</div>
+      <input type="hidden" id="editId" />
+      <div class="form-row">
+        <div class="field">
+          <label>Title (Badge)</label>
+          <input type="text" id="editTitle" maxlength="100" />
+        </div>
+        <div class="field">
+          <label>Subtitle</label>
+          <input type="text" id="editSubtitle" maxlength="150" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>URL</label>
+          <input type="url" id="editUrl" />
+        </div>
+        <div class="field">
+          <label>Icon (emoji, SVG, logo, or image URL)</label>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <input type="text" id="editIcon" placeholder="🎵, <svg>...</svg>, or https://example.com/logo.png" maxlength="2000" style="flex: 1;" />
+            <label for="editIconFile" class="btn btn-secondary btn-sm" style="margin: 0; cursor: pointer; white-space: nowrap; height: 38px; display: inline-flex; align-items: center; justify-content: center;">
+              📷 Upload Logo
+            </label>
+            <input type="file" id="editIconFile" accept="image/*" style="display: none;" onchange="handleLinkIconFile(this.files[0], 'editIcon')" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveEdit()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Crop Modal ── -->
+  <div class="modal-overlay" id="cropModal" style="z-index: 300;">
+    <div class="modal" style="max-width: 500px; width: 100%;">
+      <div class="modal-title">Crop Image</div>
+      <div style="max-height: 350px; overflow: hidden; background: #000; border-radius: 8px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center;">
+        <img id="cropImageSrc" style="max-width: 100%; max-height: 350px; display: block;" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeCropModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="confirmCrop()">Crop & Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Toast ── -->
+  <div id="toast"></div>
+
+  <script>
+    // ── Read secret key from URL param (set when admin accessed /admin.html?key=...)
+    const params = new URLSearchParams(location.search);
+    const SECRET = params.get('key') || '';
+
+    const api = (path, opts = {}) => fetch(path, {
+      ...opts,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SECRET}`,
+        ...(opts.headers || {}),
+      },
+    });
+
+    // ── Toast helper ──
+    let toastTimer;
+    function toast(msg, type = 'success') {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.className = `show ${type}`;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { el.className = ''; }, 3000);
+    }
+
+    // ═══════════════════════════════════════
+    // PROFILE
+    // ═══════════════════════════════════════
+
+    async function loadProfile() {
+      const res = await fetch('/api/profile');
+      const { profile } = await res.json();
+      document.getElementById('pName').value = profile.name || '';
+      document.getElementById('pBio').value = profile.bio || '';
+      
+      const avatarVal = profile.avatar || '';
+      document.getElementById('pAvatar').value = avatarVal;
+      
+      const img = document.getElementById('pAvatarPreview');
+      const fallback = document.getElementById('pAvatarFallback');
+      const removeBtn = document.getElementById('btnRemoveAvatar');
+      
+      if (avatarVal.trim()) {
+        img.src = avatarVal;
+        img.style.display = 'block';
+        fallback.style.display = 'none';
+        removeBtn.style.display = 'inline-block';
+      } else {
+        img.src = '';
+        img.style.display = 'none';
+        fallback.style.display = 'block';
+        removeBtn.style.display = 'none';
+      }
+    }
+
+    async function saveProfile() {
+      const name = document.getElementById('pName').value.trim();
+      const bio = document.getElementById('pBio').value.trim();
+      const avatar = document.getElementById('pAvatar').value.trim();
+
+      if (!name) { toast('Name cannot be empty', 'error'); return; }
+
+      const res = await api('/api/profile', {
+        method: 'PUT',
+        body: JSON.stringify({ name, bio, avatar }),
+      });
+
+      if (res.ok) {
+        toast('✅ Profile saved!');
+        loadProfile();
+      } else {
+        toast('Failed to save profile', 'error');
+      }
+    }
+
+    let cropperInstance = null;
+    let cropTargetType = ''; // 'avatar', 'newIcon', 'editIcon'
+
+    function openCropModal(imageUrl, targetType) {
+      cropTargetType = targetType;
+      const modal = document.getElementById('cropModal');
+      const img = document.getElementById('cropImageSrc');
+      img.src = imageUrl;
+      modal.classList.add('open');
+
+      // Destroy previous instance if any
+      if (cropperInstance) {
+        cropperInstance.destroy();
+      }
+
+      // Initialize Cropper
+      cropperInstance = new Cropper(img, {
+        aspectRatio: 1, // Force square crop
+        viewMode: 1, // Restrict crop box inside canvas
+        background: false, // Transparent checkerboard background
+        autoCropArea: 1,
+      });
+    }
+
+    function closeCropModal() {
+      const modal = document.getElementById('cropModal');
+      modal.classList.remove('open');
+      if (cropperInstance) {
+        cropperInstance.destroy();
+        cropperInstance = null;
+      }
+      document.getElementById('pAvatarFile').value = '';
+      const newIconFile = document.getElementById('newIconFile');
+      if (newIconFile) newIconFile.value = '';
+      const editIconFile = document.getElementById('editIconFile');
+      if (editIconFile) editIconFile.value = '';
+    }
+
+    function confirmCrop() {
+      if (!cropperInstance) return;
+
+      if (cropTargetType === 'avatar') {
+        const canvas = cropperInstance.getCroppedCanvas({ width: 300, height: 300 });
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+        document.getElementById('pAvatar').value = dataUrl;
+
+        const previewImg = document.getElementById('pAvatarPreview');
+        previewImg.src = dataUrl;
+        previewImg.style.display = 'block';
+        document.getElementById('pAvatarFallback').style.display = 'none';
+        document.getElementById('btnRemoveAvatar').style.display = 'inline-block';
+      } else if (cropTargetType === 'newIcon' || cropTargetType === 'editIcon') {
+        const canvas = cropperInstance.getCroppedCanvas({ width: 48, height: 48 });
+        const dataUrl = canvas.toDataURL('image/png');
+
+        document.getElementById(cropTargetType).value = dataUrl;
+        toast('✅ Logo cropped & uploaded!');
+      }
+
+      closeCropModal();
+    }
+
+    function handleAvatarFile(file) {
+      if (!file) return;
+      if (file.size > 10 * 1024 * 1024) {
+        toast('Image file is too large (max 10MB)', 'error');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        openCropModal(e.target.result, 'avatar');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleLinkIconFile(file, inputId) {
+      if (!file) return;
+      if (file.size > 10 * 1024 * 1024) {
+        toast('Logo file is too large (max 10MB)', 'error');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        openCropModal(e.target.result, inputId);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeAvatar() {
+      document.getElementById('pAvatar').value = '';
+      const previewImg = document.getElementById('pAvatarPreview');
+      previewImg.src = '';
+      previewImg.style.display = 'none';
+      document.getElementById('pAvatarFallback').style.display = 'block';
+      document.getElementById('btnRemoveAvatar').style.display = 'none';
+      document.getElementById('pAvatarFile').value = '';
+    }
+
+    // ═══════════════════════════════════════
+    // LINKS
+    // ═══════════════════════════════════════
+
+    let allLinks = [];
+
+    async function loadLinks() {
+      const res = await fetch('/api/links');
+      const { links } = await res.json();
+      allLinks = links || [];
+      renderLinks();
+    }
+
+    function renderLinks() {
+      const container = document.getElementById('linksList');
+      if (allLinks.length === 0) {
+        container.innerHTML = '<div class="empty">No links yet. Add your first one below! 👇</div>';
+        return;
+      }
+      container.innerHTML = allLinks.map(link => {
+        let iconHtml = '';
+        if (link.icon) {
+          const trimmed = link.icon.trim();
+          if (trimmed.toLowerCase().startsWith('<svg')) {
+            iconHtml = trimmed.replace('<svg', '<svg style="width: 20px; height: 20px; fill: currentColor;"');
+          } else if (trimmed.startsWith('data:image/') || trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+            iconHtml = `<img src="${esc(trimmed)}" style="width: 20px; height: 20px; object-fit: contain;" />`;
+          } else {
+            iconHtml = esc(trimmed);
+          }
+        }
+        return `
+          <div class="link-row" id="row-${link.id}">
+            <span class="link-icon">${iconHtml}</span>
+            <div class="link-info">
+              <div class="link-info-title">${esc(link.title)}</div>
+              <div class="link-info-url">${esc(link.url)}</div>
+            </div>
+            <div class="link-actions">
+              <button class="btn btn-secondary btn-sm" onclick="openEdit(${link.id})">Edit</button>
+              <button class="btn btn-danger btn-sm"    onclick="deleteLink(${link.id}, '${esc(link.title).replace(/'/g, "\\'")}')">Delete</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ── Add link ──
+    function toggleAddForm() {
+      const form = document.getElementById('addForm');
+      const btn = document.getElementById('addToggleBtn');
+      const isOpen = form.classList.contains('open');
+      form.classList.toggle('open', !isOpen);
+      btn.textContent = isOpen ? '+ Add Link' : '✕ Cancel';
+    }
+
+    async function addLink() {
+      const title = document.getElementById('newTitle').value.trim();
+      const subtitle = document.getElementById('newSubtitle').value.trim();
+      const url = document.getElementById('newUrl').value.trim();
+      const icon = document.getElementById('newIcon').value.trim() || '🔗';
+
+      if (!title || !url) { toast('Title and URL are required', 'error'); return; }
+      if (!url.startsWith('http')) { toast('URL must start with https://', 'error'); return; }
+
+      const res = await api('/api/links', {
+        method: 'POST',
+        body: JSON.stringify({ title, subtitle, url, icon, order_num: allLinks.length }),
+      });
+
+      if (res.ok) {
+        toast('✅ Link added!');
+        document.getElementById('newTitle').value = '';
+        document.getElementById('newSubtitle').value = '';
+        document.getElementById('newUrl').value = '';
+        document.getElementById('newIcon').value = '🔗';
+        toggleAddForm();
+        loadLinks();
+      } else {
+        toast('Failed to add link', 'error');
+      }
+    }
+
+    // ── Edit link ──
+    function openEdit(id) {
+      const link = allLinks.find(l => l.id === id);
+      if (!link) return;
+      document.getElementById('editId').value = link.id;
+      document.getElementById('editTitle').value = link.title;
+      document.getElementById('editSubtitle').value = link.subtitle || '';
+      document.getElementById('editUrl').value = link.url;
+      document.getElementById('editIcon').value = link.icon;
+      document.getElementById('editModal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('editModal').classList.remove('open');
+    }
+
+    async function saveEdit() {
+      const id = document.getElementById('editId').value;
+      const title = document.getElementById('editTitle').value.trim();
+      const subtitle = document.getElementById('editSubtitle').value.trim();
+      const url = document.getElementById('editUrl').value.trim();
+      const icon = document.getElementById('editIcon').value.trim() || '🔗';
+
+      if (!title || !url) { toast('Title and URL are required', 'error'); return; }
+      if (!url.startsWith('http')) { toast('URL must start with https://', 'error'); return; }
+
+      const res = await api(`/api/links/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ title, subtitle, url, icon, order_num: allLinks.find(l => l.id == id)?.order_num || 0 }),
+      });
+
+      if (res.ok) {
+        toast('✅ Link updated!');
+        closeModal();
+        loadLinks();
+      } else {
+        toast('Failed to update link', 'error');
+      }
+    }
+
+    // ── Delete link ──
+    async function deleteLink(id, title) {
+      const confirmed = confirm(`Delete "${title}"?\n\nThis cannot be undone.`);
+      if (!confirmed) return;
+
+      const res = await api(`/api/links/${id}`, { method: 'DELETE' });
+
+      if (res.ok) {
+        toast('🗑️ Link deleted');
+        loadLinks();
+      } else {
+        toast('Failed to delete link', 'error');
+      }
+    }
+
+    // Close modal on overlay click
+    document.getElementById('editModal').addEventListener('click', function (e) {
+      if (e.target === this) closeModal();
+    });
+
+    // ── Escape HTML helper ──
+    function esc(str) {
+      const d = document.createElement('div');
+      d.textContent = String(str || '');
+      return d.innerHTML;
+    }
+
+    // ── Init ──
+    loadProfile();
+    loadLinks();
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+</body>
+
+</html>
